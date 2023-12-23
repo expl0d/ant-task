@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 
 
 class Ant:
-    """."""
+    """Класс муравей"""
 
     def __init__(self, threshold: int, x: int, y: int):
-        """."""
+        """Инициализация"""
 
         self._threshold = threshold
         self._x = x
@@ -20,7 +20,11 @@ class Ant:
 
     @property
     def max_distance(self) -> list:
-        """."""
+        """
+        Расчет максимального расстояния от начала координат
+
+        Записывается в виде перевернутого массива цифр
+        """
 
         if self._max_distance:
             return self._max_distance
@@ -40,7 +44,7 @@ class Ant:
 
     @staticmethod
     def sum_digits(num: int) -> int:
-        """."""
+        """Сумма цифр числа"""
 
         s = 0
         while num:
@@ -49,7 +53,10 @@ class Ant:
         return s
 
     def _move2start(self, x: int, y: int):
-        """."""
+        """
+        Переход в начало (рекурсивный расчет минимального расстояния от
+        начала координат с учетом первоначальной позиции)
+        """
 
         while True:
             cond_x = (x - 1 >= 0
@@ -70,7 +77,7 @@ class Ant:
                 return self._move2start(y, x)
 
     def _get_f(self, index: int) -> int:
-        """."""
+        """Получение значения разряда по индексу"""
 
         try:
             return self.max_distance[index]
@@ -84,7 +91,10 @@ class Ant:
             prev_y: int,
             prev_shift: int
     ) -> int:
-        """."""
+        """
+        Рекурсивный расчет максимального количества возможных для
+        посещения клеток муравьем
+        """
 
         res = 0
         shift = self._get_f(f_index + 1) - (prev_x + prev_y) + prev_shift
@@ -104,12 +114,14 @@ class Ant:
         return res
 
     def sum_nums_digits(self, num1: int, num2: int) -> int:
-        """."""
+        """Сумма цифр 2 чисел"""
 
         return self.sum_digits(num1) + self.sum_digits(num2)
 
     def create_image(self, dimensions: int):
-        """."""
+        """
+        Генерация изображения всех возможных клеток в рамках указанного значения
+        """
 
         matrix = np.empty((dimensions, dimensions), dtype=int)
         for i in range(dimensions):
@@ -123,7 +135,10 @@ class Ant:
         plt.savefig(f'images/{self._threshold}.png')
 
     def total_steps(self) -> int:
-        """."""
+        """
+        Вход в рекурсию для расчета максимального количества возможных для
+        посещения клеток муравьем
+        """
 
         return self._calc_recursive(len(self.max_distance) - 1, 0, 0, 0)
 
